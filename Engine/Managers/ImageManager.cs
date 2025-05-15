@@ -43,8 +43,21 @@ namespace Colonia.Engine.Managers
             {
                 string filePath = files[i];
                 string fileName = Path.GetFileNameWithoutExtension(filePath);
-                
-                Add(fileName, Texture2D.FromFile(App.Instance.GraphicsDevice, filePath), canOverride);
+
+                Texture2D image;
+
+                try
+                {
+                    using FileStream stream = new(filePath, FileMode.Open, FileAccess.Read, FileShare.Read);
+                    image = Texture2D.FromStream(App.Instance.GraphicsDevice, stream);
+                }
+                catch (Exception ex)
+                {
+                    Log.WriteLine(LogLevel.Error, $"Unable to load image '{fileName}' from file '{filePath}' into Asset Manager: {ex.Message}");
+                    continue;
+                }
+
+                Add(fileName, image, canOverride);
 
                 Log.WriteLine(LogLevel.Info, $"Loaded image '{fileName}' from file '{filePath}' into Asset Manager.");
 
@@ -62,7 +75,11 @@ namespace Colonia.Engine.Managers
                 return;
             }
 
-            if (_images.ContainsKey(name) && canOverride) _images.Remove(name);
+            if (_images.TryGetValue(name, out Texture2D value) && canOverride)
+            {
+                value.Dispose();
+                _images.Remove(name);
+            }
             
             _images.Add(name, image);
         }
