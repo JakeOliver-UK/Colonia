@@ -12,6 +12,15 @@ namespace Colonia.Engine.Entities
         public bool IsActive => _isActive;
         public Entity Parent => _parent;
         public EntityManager Manager => _manager;
+        
+        public Transform Transform
+        {
+            get
+            {
+                if (TryGetComponent(out Transform transform)) return transform;
+                else return AddComponent<Transform>();
+            }
+        }
 
         private bool _isActive = false;
         private Entity _parent;
