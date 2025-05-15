@@ -26,6 +26,10 @@ namespace Colonia.Engine.Managers
         public void Initialize(int count)
         {
             _entities = new Entity[count];
+            for (int i = 0; i < count; i++)
+            {
+                _entities[i] = new();
+            }
         }
 
         public Entity[] GetAllActive() => Array.FindAll(_entities, e => e != null && e.IsActive);

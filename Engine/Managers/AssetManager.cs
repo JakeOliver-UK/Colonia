@@ -7,9 +7,9 @@ namespace Colonia.Engine.Managers
     internal class AssetManager : IDisposable
     {
         public static string DirectoryPath => Path.Combine(AppInfo.ApplicationDirectoryPath, "Assets");
-        public static ImageManager Images => _images;
+        public ImageManager Images => _images;
 
-        private static ImageManager _images;
+        private ImageManager _images;
 
         public AssetManager()
         {
