@@ -1,12 +1,12 @@
 ﻿using Colonia.Engine.Utils;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace Colonia.Engine
 {
-    internal class Sprite
+    internal class Sprite : IDisposable
     {
         public string Name { get; }
         public string[] Images { get; }
@@ -97,6 +97,13 @@ namespace Colonia.Engine
             if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
             string path = Path.Combine(directoryPath, $"{Name}.sprite");
             File.WriteAllText(path, json);
+        }
+
+        public void Dispose()
+        {
+            _isPlaying = false;
+            _currentFrame = 0;
+            _elapsedTime = 0.0f;
         }
     }
 }

@@ -1,0 +1,122 @@
+{
+  "Name": "HumanIdle_DownRight",
+  "Images": [
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle",
+    "HumanIdle"
+  ],
+  "Frames": [
+    {
+      "X": 0,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 32,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 64,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 96,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 128,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 160,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 192,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 224,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 256,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 288,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 320,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 352,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 384,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 416,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 448,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 480,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    }
+  ],
+  "Delay": 200.0,
+  "IsLooping": true,
+  "ShouldAutoPlay": true
+}

@@ -25,6 +25,8 @@ namespace Colonia.Engine.Managers
 
             int count = 0;
 
+            if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
+
             string[] files = [.. Directory
                 .EnumerateFiles(directoryPath, "*.*", SearchOption.AllDirectories)
                 .Where(f => Path.GetExtension(f).Equals(".ttf", StringComparison.OrdinalIgnoreCase))];

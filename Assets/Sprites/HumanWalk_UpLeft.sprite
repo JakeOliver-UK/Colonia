@@ -1,0 +1,38 @@
+{
+  "Name": "HumanWalk_UpLeft",
+  "Images": [
+    "HumanWalk",
+    "HumanWalk",
+    "HumanWalk",
+    "HumanWalk"
+  ],
+  "Frames": [
+    {
+      "X": 0,
+      "Y": 96,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 32,
+      "Y": 96,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 64,
+      "Y": 96,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 96,
+      "Y": 96,
+      "Width": 32,
+      "Height": 32
+    }
+  ],
+  "Delay": 200.0,
+  "IsLooping": true,
+  "ShouldAutoPlay": true
+}

@@ -9,7 +9,7 @@ namespace Colonia.Engine.Managers
         public bool IsOverlayManager => _isOverlayManager;
 
         private Entity[] _entities;
-        private bool _isOverlayManager = false;
+        private readonly bool _isOverlayManager = false;
 
         public EntityManager(bool isOverlayManager)
         {

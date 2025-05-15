@@ -14,6 +14,7 @@ namespace Colonia
         public SceneManager SceneManager => _sceneManager;
         public SettingsManager SettingsManager => _settingsManager;
         public AssetManager AssetManager => _assetManager;
+        public InputManager Input => _input;
 
         private static App _instance;
         private readonly GraphicsDeviceManager _graphicsDeviceManager;
@@ -21,6 +22,7 @@ namespace Colonia
         private SettingsManager _settingsManager;
         private SceneManager _sceneManager;
         private AssetManager _assetManager;
+        private InputManager _input;
 
         public App()
         {
@@ -34,6 +36,7 @@ namespace Colonia
             Log.WriteLine(LogLevel.Info, "Initializing application...");
 
             _settingsManager = new();
+            _input = new();
 
             base.Initialize();
 
@@ -54,6 +57,7 @@ namespace Colonia
         {
             Time.Update(gameTime);
             FPS.Update();
+            _input.Update();
             _sceneManager.Current.Update();
             Window.Title = _settingsManager.Settings.ShowFrameRate ? $"{AppInfo.Name} - v{AppInfo.Version} - FPS: {FPS.Current:n0}" : $"{AppInfo.Name} - v{AppInfo.Version}";
 
