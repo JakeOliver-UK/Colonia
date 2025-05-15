@@ -13,12 +13,14 @@ namespace Colonia
         public SpriteBatch SpriteBatch => _spriteBatch;
         public SceneManager SceneManager => _sceneManager;
         public SettingsManager SettingsManager => _settingsManager;
+        public AssetManager AssetManager => _assetManager;
 
         private static App _instance;
         private readonly GraphicsDeviceManager _graphicsDeviceManager;
         private SpriteBatch _spriteBatch;
         private SettingsManager _settingsManager;
         private SceneManager _sceneManager;
+        private AssetManager _assetManager;
 
         public App()
         {
@@ -45,8 +47,7 @@ namespace Colonia
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
-
-            
+            _assetManager = new();
         }
 
         protected override void Update(GameTime gameTime)
@@ -77,6 +78,9 @@ namespace Colonia
 
             _sceneManager.Dispose();
             _sceneManager = null;
+
+            _assetManager.Dispose();
+            _assetManager = null;
 
             _settingsManager.Dispose();
             _settingsManager = null;

@@ -86,31 +86,20 @@ namespace Colonia.Engine.Managers
 
         public void Dispose()
         {
-            Clear();
+            _current?.Dispose();
             _current = null;
+
+            for (int i = 0; i < _scenes.Count; i++)
+            {
+                KeyValuePair<string, Scene> scene = _scenes.ElementAt(i);
+                scene.Value.Dispose();
+            }
+
             _scenes = null;
         }
 
         public Scene this[string name] => Get(name);
-        public int Count => _scenes.Count;
         public bool Contains(string name) => _scenes.ContainsKey(name);
         public bool Contains(Scene scene) => _scenes.ContainsValue(scene);
-        public bool IsEmpty => _scenes.Count == 0;
-        
-        public void Clear()
-        {
-            if (_current != null)
-            {
-                _current.Dispose();
-                _current = null;
-            }
-            
-            for (int i = 0; i < _scenes.Count; i++)
-            {
-                _scenes.ElementAt(i).Value.Dispose();
-            }
-            
-            _scenes.Clear();
-        }
     }
 }

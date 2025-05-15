@@ -1,5 +1,4 @@
 ﻿using Colonia.Engine;
-using Microsoft.Xna.Framework;
 
 namespace Colonia.Scenes
 {
@@ -8,8 +7,6 @@ namespace Colonia.Scenes
         public override void Initialize()
         {
             base.Initialize();
-
-            BackgroundColor = Color.Black;
         }
     }
 }
