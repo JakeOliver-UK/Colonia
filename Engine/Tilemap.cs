@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
-using RenderingLibrary.Graphics;
 using System.Collections.Generic;
 using System.IO;
 
@@ -11,6 +10,7 @@ namespace Colonia.Engine
     internal class Tilemap
     {
         public TileLayer[] Layers { get; }
+        public Vector2 Scale { get; set; } = Vector2.One;
 
         public Tilemap(int layerCount, int tileWidth, int tileHeight, int width, int height)
         {
@@ -22,9 +22,10 @@ namespace Colonia.Engine
         }
 
         [JsonConstructor]
-        public Tilemap(TileLayer[] layers)
+        public Tilemap(TileLayer[] layers, Vector2 scale)
         {
             Layers = layers;
+            Scale = scale;
         }
 
         public TileLayer GetLayer(int layer)
@@ -51,11 +52,10 @@ namespace Colonia.Engine
                                 sprite.Update();
                                 Texture2D image = App.Instance.AssetManager.Images.Get(sprite.Images[sprite.CurrentFrame]);
                                 Rectangle frame = sprite.Frames[sprite.CurrentFrame];
-                                Vector2 scale = new(3.0f, 3.0f);
-                                Vector2 position = new(tile.X * tile.Width * scale.X, tile.Y * tile.Height * scale.Y);
+                                Vector2 position = new(tile.X * tile.Width * Scale.X, tile.Y * tile.Height * Scale.Y);
                                 Vector2 origin = Vector2.Zero;
                                 float rotation = 0.0f;
-                                App.Instance.SpriteBatch.Draw(image, position, frame, tile.Color, rotation, origin, scale, SpriteEffects.None, z / 1000);
+                                App.Instance.SpriteBatch.Draw(image, position, frame, tile.Color, rotation, origin, Scale, SpriteEffects.None, z / 1000);
                             }
                         }
                     }

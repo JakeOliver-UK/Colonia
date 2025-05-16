@@ -30,7 +30,7 @@ namespace Colonia.Engine.Entities.Components
             if (App.Instance.Input.IsKeyDown(Keys.Left)) movement.X -= 1.0f;
             if (App.Instance.Input.IsKeyDown(Keys.Right)) movement.X += 1.0f;
 
-            Entity.Transform.Position += movement * Time.Delta * 100.0f;
+            Entity.Transform.Position += movement * Time.Delta * 250.0f;
         }
     }
 }
