@@ -1,5 +1,6 @@
 ﻿using Colonia.Engine.Utils;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
 namespace Colonia.Engine.Entities.Components
@@ -14,6 +15,19 @@ namespace Colonia.Engine.Entities.Components
                                         App.Instance.GraphicsDevice.Viewport.Bounds.Height * 0.5f, 0));
 
         public Matrix Inverse => Matrix.Invert(Transform);
+
+        public Rectangle VisibleArea
+        {
+            get
+            {
+                Viewport vp = App.Instance.GraphicsDevice.Viewport;
+                float w = vp.Width / Zoom;
+                float h = vp.Height / Zoom;
+                float cx = Entity.Transform.Position.X;
+                float cy = Entity.Transform.Position.Y;
+                return new Rectangle((int)(cx - w / 2f), (int)(cy - h / 2f), (int)w, (int)h);
+            }
+        }
 
         public Vector2 ScreenToWorld(Vector2 screenPosition)
         {

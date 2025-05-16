@@ -14,7 +14,7 @@ namespace Colonia.Scenes
             BackgroundColor = Color.Black;
 
             Tilemap = new(1, 8, 8, 100, 100);
-            Tilemap[0].FillTiles("Plains_Grass", Color.White);
+            Tilemap[0].FillTiles("Plains_Water", Color.White);
 
             Entity entity = WorldEntityManager.Create("Human");
             entity.Transform.Position = new(100, 100);
