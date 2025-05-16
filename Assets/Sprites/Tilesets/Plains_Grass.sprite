@@ -1,0 +1,17 @@
+{
+  "Name": "Plains_Grass",
+  "Images": [
+    "Minifantasy_ForgottenPlainsTiles"
+  ],
+  "Frames": [
+    {
+      "X": 280,
+      "Y": 88,
+      "Width": 8,
+      "Height": 8
+    }
+  ],
+  "Delay": 0.0,
+  "IsLooping": false,
+  "ShouldAutoPlay": false
+}

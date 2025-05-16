@@ -1,4 +1,5 @@
 ﻿using Colonia.Engine.Utils;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
@@ -10,13 +11,17 @@ namespace Colonia.Engine.Managers
     internal class ImageManager : IDisposable
     {
         public static string DirectoryPath => Path.Combine(AssetManager.DirectoryPath, "Images");
+        public Texture2D Pixel => _pixel;
 
         private Dictionary<string, Texture2D> _images;
+        private readonly Texture2D _pixel;
 
         public ImageManager()
         {
             _images = [];
             Load(DirectoryPath, false);
+            _pixel = new(App.Instance.GraphicsDevice, 1, 1);
+            _pixel.SetData([Color.White]);
         }
 
         public void Load(string directoryPath, bool canOverride)

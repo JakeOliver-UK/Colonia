@@ -8,6 +8,7 @@ namespace Colonia.Engine
     internal abstract class Scene : IDisposable
     {
         public Color BackgroundColor { get; set; } = Color.CornflowerBlue;
+        public Tilemap Tilemap { get; set; }
         public bool IsActive => _isActive;
         public EntityManager WorldEntityManager => _worldEntityManager;
         public EntityManager OverlayEntityManager => _overlayEntityManager;
@@ -33,17 +34,18 @@ namespace Colonia.Engine
         {
             App.Instance.GraphicsDevice.Clear(BackgroundColor);
 
-            App.Instance.SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
             DrawWorld();
             App.Instance.SpriteBatch.End();
 
-            App.Instance.SpriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.NonPremultiplied);
+            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
             DrawOverlay();
             App.Instance.SpriteBatch.End();
         }
 
         public virtual void DrawWorld()
         {
+            Tilemap?.Draw();
             _worldEntityManager.Draw();
         }
         
