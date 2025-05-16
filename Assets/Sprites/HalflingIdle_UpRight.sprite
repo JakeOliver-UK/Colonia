@@ -1,0 +1,122 @@
+{
+  "Name": "HalflingIdle_UpRight",
+  "Images": [
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle",
+    "HalflingIdle"
+  ],
+  "Frames": [
+    {
+      "X": 0,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 32,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 64,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 96,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 128,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 160,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 192,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 224,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 256,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 288,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 320,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 352,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 384,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 416,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 448,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 480,
+      "Y": 64,
+      "Width": 32,
+      "Height": 32
+    }
+  ],
+  "Delay": 200.0,
+  "IsLooping": true,
+  "ShouldAutoPlay": true
+}

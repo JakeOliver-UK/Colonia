@@ -1,0 +1,38 @@
+{
+  "Name": "ElfWalk_DownRight",
+  "Images": [
+    "ElfWalk",
+    "ElfWalk",
+    "ElfWalk",
+    "ElfWalk"
+  ],
+  "Frames": [
+    {
+      "X": 0,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 32,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 64,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    },
+    {
+      "X": 96,
+      "Y": 0,
+      "Width": 32,
+      "Height": 32
+    }
+  ],
+  "Delay": 200.0,
+  "IsLooping": true,
+  "ShouldAutoPlay": true
+}
