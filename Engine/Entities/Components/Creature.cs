@@ -16,13 +16,13 @@ namespace Colonia.Engine.Entities.Components
         {
             Vector2 movement = Vector2.Zero;
 
-            if (App.Instance.Input.IsKeyPressed(Keys.Up))
+            if (App.Instance.Input.IsKeyPressed(Keys.Q))
             {
                 Type++;
                 if (Type > CreatureType.Orc) Type = CreatureType.Dwarf;
             }
 
-            if (App.Instance.Input.IsKeyPressed(Keys.Down))
+            if (App.Instance.Input.IsKeyPressed(Keys.E))
             {
                 Type--;
                 if (Type < CreatureType.Dwarf) Type = CreatureType.Orc;

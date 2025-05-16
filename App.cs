@@ -59,7 +59,7 @@ namespace Colonia
             FPS.Update();
             _input.Update();
             _sceneManager.Current.Update();
-            Window.Title = _settingsManager.Settings.ShowFrameRate ? $"{AppInfo.Name} - v{AppInfo.Version} - FPS: {FPS.Current:n0}" : $"{AppInfo.Name} - v{AppInfo.Version}";
+            Window.Title = _settingsManager.Settings.ShowFrameRate ? $"{AppInfo.Name} - v{AppInfo.Version} - FPS: {FPS.Current:n0} - Screen: {Input.MousePosition} - World: {SceneManager.Current.Camera.ScreenToWorld(Input.MousePosition)}" : $"{AppInfo.Name} - v{AppInfo.Version}";
 
             base.Update(gameTime);
         }
