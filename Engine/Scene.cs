@@ -28,6 +28,7 @@ namespace Colonia.Engine
             _overlayEntityManager = new(true);
             Entity cameraEntity = _worldEntityManager.Create("Camera");
             _camera = cameraEntity.AddComponent<Camera>();
+            _camera.Zoom = 2;
         }
 
         public virtual void Update()
@@ -40,11 +41,11 @@ namespace Colonia.Engine
         {
             App.Instance.GraphicsDevice.Clear(BackgroundColor);
 
-            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied, transformMatrix: _camera.Transform);
+            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, _camera.Transform);
             DrawWorld();
             App.Instance.SpriteBatch.End();
 
-            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.NonPremultiplied);
+            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
             DrawOverlay();
             App.Instance.SpriteBatch.End();
         }

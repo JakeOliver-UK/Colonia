@@ -13,12 +13,12 @@ namespace Colonia.Scenes
 
             BackgroundColor = Color.Black;
 
-            Tilemap = new(1, 8, 8, 100, 100);
+            Tilemap = new(1, 8, 8, 256, 256);
             Tilemap[0].FillTiles("Plains_Water", Color.White);
 
             Entity entity = WorldEntityManager.Create("Human");
             entity.Transform.Position = new(100, 100);
-            entity.Transform.Scale = new(3.0f, 3.0f);
+            entity.Transform.Scale = Vector2.One;
             entity.AddComponent<SpriteRenderer>().LayerDepth = 1.0f;
             entity.AddComponent<Creature>();
         }

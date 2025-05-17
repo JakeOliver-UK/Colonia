@@ -47,12 +47,5 @@ namespace Colonia.Engine.Utils
         public static void WriteLine() => Write(LogLevel.None, Environment.NewLine, false);
     }
 
-    internal enum LogLevel
-    {
-        None,
-        Debug,
-        Info,
-        Warning,
-        Error
-    }
+    internal enum LogLevel { None, Debug, Info, Warning, Error }
 }

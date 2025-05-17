@@ -50,9 +50,11 @@ namespace Colonia.Engine
                             if (sprite != null)
                             {
                                 sprite.Update();
+                                Vector2 position = new(tile.X * tile.Width * Scale.X, tile.Y * tile.Height * Scale.Y);
+                                Rectangle bounds = new((int)position.X, (int)position.Y, tile.Width, tile.Height);
+                                if (!App.Instance.SceneManager.Current.Camera.IsVisible(bounds)) continue;
                                 Texture2D image = App.Instance.AssetManager.Images.Get(sprite.Images[sprite.CurrentFrame]);
                                 Rectangle frame = sprite.Frames[sprite.CurrentFrame];
-                                Vector2 position = new(tile.X * tile.Width * Scale.X, tile.Y * tile.Height * Scale.Y);
                                 Vector2 origin = Vector2.Zero;
                                 float rotation = 0.0f;
                                 App.Instance.SpriteBatch.Draw(image, position, frame, tile.Color, rotation, origin, Scale, SpriteEffects.None, z / 1000);

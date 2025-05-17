@@ -1,4 +1,5 @@
-﻿using Colonia.Engine.Utils;
+﻿using Colonia.Engine.Managers;
+using Colonia.Engine.Utils;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -10,96 +11,59 @@ namespace Colonia.Engine.Entities.Components
         public CreatureHeading Heading { get; set; } = CreatureHeading.Right;
         public CreatureFacing Facing { get; set; } = CreatureFacing.Down;
         public float MovementSpeed { get; set; } = 100.0f;
-        public bool IsMoving { get; set; } = false;
+        public bool IsMoving { get; private set; } = false;
+
+        private Vector2 _targetPosition;
+        private const float _arrivalThreshold = 2.0f;
 
         public override void Update()
         {
-            Vector2 movement = Vector2.Zero;
+            if (App.Instance.Input.IsKeyPressed(Keys.Q)) CycleType(1);
+            if (App.Instance.Input.IsKeyPressed(Keys.E)) CycleType(-1);
 
-            if (App.Instance.Input.IsKeyPressed(Keys.Q))
+            if (App.Instance.Input.IsMouseButtonPressed(MouseButton.Left))
             {
-                Type++;
-                if (Type > CreatureType.Orc) Type = CreatureType.Dwarf;
-            }
-
-            if (App.Instance.Input.IsKeyPressed(Keys.E))
-            {
-                Type--;
-                if (Type < CreatureType.Dwarf) Type = CreatureType.Orc;
+                _targetPosition = App.Instance.SceneManager.Current.Camera.ScreenToWorld(App.Instance.Input.MousePosition);
+                IsMoving = true;
             }
 
-            if (App.Instance.Input.IsKeyDown(Keys.W))
-            {
-                Facing = CreatureFacing.Up;
-                IsMoving = true;
-                movement.Y -= 1.0f;
-            }
-            if (App.Instance.Input.IsKeyDown(Keys.S))
-            {
-                Facing = CreatureFacing.Down;
-                IsMoving = true;
-                movement.Y += 1.0f;
-            }
-            if (App.Instance.Input.IsKeyDown(Keys.A))
-            {
-                Heading = CreatureHeading.Left;
-                IsMoving = true;
-                movement.X -= 1.0f;
-            }
-            if (App.Instance.Input.IsKeyDown(Keys.D))
-            {
-                Heading = CreatureHeading.Right;
-                IsMoving = true;
-                movement.X += 1.0f;
-            }
-            if (App.Instance.Input.IsKeyUp(Keys.W) && App.Instance.Input.IsKeyUp(Keys.S) && App.Instance.Input.IsKeyUp(Keys.A) && App.Instance.Input.IsKeyUp(Keys.D))
-            {
-                IsMoving = false;
-            }
+            Vector2 currentPos = Entity.Transform.Position;
+            Vector2 toTarget = _targetPosition - currentPos;
 
-            if (movement != Vector2.Zero)
+            if (IsMoving && toTarget.LengthSquared() > _arrivalThreshold * _arrivalThreshold)
             {
-                movement.Normalize();
+                Vector2 movement = Vector2.Normalize(toTarget);
+                UpdateFacingAndHeading(movement);
                 Entity.Transform.Position += movement * MovementSpeed * Time.Delta;
             }
+            else IsMoving = false;
 
-            string creature = Type.ToString();
+            string state = IsMoving ? "Walk" : "Idle";
+            string dirString = (Heading == CreatureHeading.Left, Facing == CreatureFacing.Up) switch
+            {
+                (true, true) => "UpLeft",
+                (true, false) => "DownLeft",
+                (false, true) => "UpRight",
+                _ => "DownRight"
+            };
+            string animKey = $"{Type}{state}_{dirString}";
+            Entity.GetComponent<SpriteRenderer>().Sprite = animKey;
+        }
 
-            string animationName;
-            if (IsMoving) animationName = "Walk";
-            else animationName = "Idle";
+        private void CycleType(int delta)
+        {
+            Type = (CreatureType)(((int)Type + delta + 6) % 6);
+        }
 
-            string direction;
-            if (Heading == CreatureHeading.Left && Facing == CreatureFacing.Up) direction = "UpLeft";
-            else if (Heading == CreatureHeading.Left && Facing == CreatureFacing.Down) direction = "DownLeft";
-            else if (Heading == CreatureHeading.Right && Facing == CreatureFacing.Up) direction = "UpRight";
-            else direction = "DownRight";
-
-            string animationKey = $"{creature}{animationName}_{direction}";
-
-            Entity.GetComponent<SpriteRenderer>().Sprite = animationKey;
+        private void UpdateFacingAndHeading(Vector2 movement)
+        {
+            //if (Math.Abs(movement.Y) > Math.Abs(movement.X)) Facing = movement.Y < 0 ? CreatureFacing.Up : CreatureFacing.Down;
+            Facing = CreatureFacing.Down;
+            Heading = movement.X < 0 ? CreatureHeading.Left : CreatureHeading.Right;
         }
     }
 
-    internal enum CreatureType
-    {
-        Dwarf,
-        Elf,
-        Goblin,
-        Halfling,
-        Human,
-        Orc
-    }
-
-    internal enum CreatureHeading
-    {
-        Left,
-        Right
-    }
-
-    internal enum CreatureFacing
-    {
-        Up,
-        Down
-    }
+    internal enum CreatureType { Dwarf, Elf, Goblin, Halfling, Human, Orc }
+    internal enum CreatureHeading { Left, Right }
+    internal enum CreatureFacing { Up, Down }
 }
