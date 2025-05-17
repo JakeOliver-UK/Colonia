@@ -33,6 +33,7 @@ namespace Colonia.Engine
 
         public virtual void Update()
         {
+            Tilemap?.Update();
             _worldEntityManager.Update();
             _overlayEntityManager.Update();
         }

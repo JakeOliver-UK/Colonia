@@ -11,7 +11,7 @@ namespace Colonia.Engine
         public string Name { get; }
         public string[] Images { get; }
         public Rectangle[] Frames { get; }
-        public float Delay { get; set; } = 300.0f;
+        public float Delay { get; set; }
         public bool IsLooping { get; set; } = false;
         public bool ShouldAutoPlay { get; set; } = false;
 

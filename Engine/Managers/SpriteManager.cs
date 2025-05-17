@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace Colonia.Engine.Managers
 {
-    internal class SpriteManager
+    internal class SpriteManager : IDisposable
     {
         public static string DirectoryPath => Path.Combine(AssetManager.DirectoryPath, "Sprites");
 

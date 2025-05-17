@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -34,6 +35,42 @@ namespace Colonia.Engine
             return Layers[layer];
         }
 
+        public void Update()
+        {
+            List<Sprite> sprites = [];
+            for (int z = 0; z < Layers.Length; z++)
+            {
+                TileLayer layer = Layers[z];
+                for (int x = 0; x < layer.Width; x++)
+                {
+                    for (int y = 0; y < layer.Height; y++)
+                    {
+                        TileCell tile = layer[x, y];
+                        if (tile.Tile != null)
+                        {
+                            Tile tileObj = App.Instance.AssetManager.Tiles.Get(tile.Tile);
+                            int value = 0;
+                            if (tileObj.IsAutotile) value = GetAutotileValue(x, y, z);
+                            Sprite sprite = App.Instance.AssetManager.Sprites.Get(tileObj.Sprites[value]);
+                            if (sprite != null)
+                            {
+                                if (!sprites.Contains(sprite))
+                                {
+                                    sprites.Add(sprite);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+            for (int i = 0; i < sprites.Count; i++)
+            {
+                Sprite sprite = sprites[i];
+                if (sprite == null) continue;
+                sprite.Update();
+            }
+        }
+
         public void Draw()
         {
             for (int z = 0; z < Layers.Length; z++)
@@ -44,16 +81,19 @@ namespace Colonia.Engine
                     for (int y = 0; y < layer.Height; y++)
                     {
                         TileCell tile = layer[x, y];
-                        if (tile.Sprite != null)
+                        if (tile.Tile != null)
                         {
-                            Sprite sprite = App.Instance.AssetManager.Sprites.Get(tile.Sprite);
+                            Tile tileObj = App.Instance.AssetManager.Tiles.Get(tile.Tile);
+                            int value = 0;
+                            if (tileObj.IsAutotile) value = GetAutotileValue(x, y, z);
+                            Sprite sprite = App.Instance.AssetManager.Sprites.Get(tileObj.Sprites[value]);
                             if (sprite != null)
                             {
-                                sprite.Update();
                                 Vector2 position = new(tile.X * tile.Width * Scale.X, tile.Y * tile.Height * Scale.Y);
                                 Rectangle bounds = new((int)position.X, (int)position.Y, tile.Width, tile.Height);
                                 if (!App.Instance.SceneManager.Current.Camera.IsVisible(bounds)) continue;
                                 Texture2D image = App.Instance.AssetManager.Images.Get(sprite.Images[sprite.CurrentFrame]);
+                                if (image == null) continue;
                                 Rectangle frame = sprite.Frames[sprite.CurrentFrame];
                                 Vector2 origin = Vector2.Zero;
                                 float rotation = 0.0f;
@@ -63,6 +103,38 @@ namespace Colonia.Engine
                     }
                 }
             }
+        }
+
+        private int GetAutotileValue(int x, int y, int layer)
+        {
+            TileCell tileCell = Layers[layer].GetTile(x, y);
+            if (tileCell == null) return 0;
+            if (tileCell.Tile == null) return 0;
+            Tile tile = App.Instance.AssetManager.Tiles.Get(tileCell.Tile);
+            if (tile == null) return 0;
+            if (!tile.IsAutotile) return 0;
+
+            int value = 0;
+
+            TileCell upLeft = Layers[layer].GetTile(x - 1, y - 1);
+            TileCell up = Layers[layer].GetTile(x, y - 1);
+            TileCell upRight = Layers[layer].GetTile(x + 1, y - 1);
+            TileCell left = Layers[layer].GetTile(x - 1, y);
+            TileCell right = Layers[layer].GetTile(x + 1, y);
+            TileCell downLeft = Layers[layer].GetTile(x - 1, y + 1);
+            TileCell down = Layers[layer].GetTile(x, y + 1);
+            TileCell downRight = Layers[layer].GetTile(x + 1, y + 1);
+
+            if (upLeft.Tile == tile.Name) value += 1;
+            if (up.Tile == tile.Name) value += 2;
+            if (upRight.Tile == tile.Name) value += 4;
+            if (left.Tile == tile.Name) value += 8;
+            if (right.Tile == tile.Name) value += 16;
+            if (downLeft.Tile == tile.Name) value += 32;
+            if (down.Tile == tile.Name) value += 64;
+            if (downRight.Tile == tile.Name) value += 128;
+
+            return value;
         }
 
         public TileLayer this[int layer] => GetLayer(layer);
@@ -107,7 +179,7 @@ namespace Colonia.Engine
         public void SetTile(int x, int y, string sprite, Color color)
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height) return;
-            Tiles[x, y].Sprite = sprite;
+            Tiles[x, y].Tile = sprite;
             Tiles[x, y].Color = color;
         }
 
@@ -117,7 +189,7 @@ namespace Colonia.Engine
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    Tiles[x, y].Sprite = sprite;
+                    Tiles[x, y].Tile = sprite;
                     Tiles[x, y].Color = color;
                 }
             }
@@ -131,7 +203,7 @@ namespace Colonia.Engine
                 for (int y = area.Y; y < area.Y + area.Height; y++)
                 {
                     if (x < 0 || x >= Width || y < 0 || y >= Height) continue;
-                    Tiles[x, y].Sprite = sprite;
+                    Tiles[x, y].Tile = sprite;
                     Tiles[x, y].Color = color;
                 }
             }
@@ -144,7 +216,7 @@ namespace Colonia.Engine
         public int Y { get; }
         public int Width { get; set; }
         public int Height { get; set; }
-        public string Sprite { get; set; }
+        public string Tile { get; set; }
         public Color Color { get; set; } = Color.White;
         public Rectangle Bounds => new(X * Width, Y * Height, Width, Height);
 
@@ -157,18 +229,18 @@ namespace Colonia.Engine
         }
 
         [JsonConstructor]
-        public TileCell(int x, int y, int width, int height, string sprite, Color color)
+        public TileCell(int x, int y, int width, int height, string tile, Color color)
         {
             X = x;
             Y = y;
             Width = width;
             Height = height;
-            Sprite = sprite;
+            Tile = tile;
             Color = color;
         }
     }
 
-    public class Tile
+    public class Tile : IDisposable
     {
         public string Name { get; }
         public Dictionary<int, string> Sprites { get; }
@@ -196,6 +268,12 @@ namespace Colonia.Engine
             if (!Directory.Exists(directoryPath)) Directory.CreateDirectory(directoryPath);
             string path = Path.Combine(directoryPath, $"{Name}.tile");
             File.WriteAllText(path, json);
+        }
+
+        public void Dispose()
+        {
+            Sprites.Clear();
+            GC.SuppressFinalize(this);
         }
     }
 }

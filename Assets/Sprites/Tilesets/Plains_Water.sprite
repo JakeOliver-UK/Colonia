@@ -1,17 +1,24 @@
 {
   "Name": "Plains_Water",
   "Images": [
+    "Minifantasy_ForgottenPlainsTiles",
     "Minifantasy_ForgottenPlainsTiles"
   ],
   "Frames": [
     {
       "X": 208,
-      "Y": 8,
+      "Y": 32,
+      "Width": 8,
+      "Height": 8
+    },
+	{
+      "X": 240,
+      "Y": 32,
       "Width": 8,
       "Height": 8
     }
   ],
-  "Delay": 0.0,
-  "IsLooping": false,
-  "ShouldAutoPlay": false
+  "Delay": 950.0,
+  "IsLooping": true,
+  "ShouldAutoPlay": true
 }

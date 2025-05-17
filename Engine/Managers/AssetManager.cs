@@ -10,16 +10,19 @@ namespace Colonia.Engine.Managers
         public FontManager Fonts => _fonts;
         public ImageManager Images => _images;
         public SpriteManager Sprites => _sprites;
+        public TileManager Tiles => _tiles;
 
         private FontManager _fonts;
         private ImageManager _images;
         private SpriteManager _sprites;
+        private TileManager _tiles;
 
         public AssetManager()
         {
             _fonts = new();
             _images = new();
             _sprites = new();
+            _tiles = new();
         }
 
         public void Dispose()
@@ -30,6 +33,8 @@ namespace Colonia.Engine.Managers
             _images = null;
             _sprites.Dispose();
             _sprites = null;
+            _tiles.Dispose();
+            _tiles = null;
         }
     }
 }
