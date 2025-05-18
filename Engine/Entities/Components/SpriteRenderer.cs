@@ -37,6 +37,8 @@ namespace Colonia.Engine.Entities.Components
             
             if (App.Instance.SceneManager.Current.Camera.IsVisible(Bounds))
             {
+                if (Transparency > 1.0f) Transparency = 1.0f;
+                if (Transparency < 0.0f) Transparency = 0.0f;
                 App.Instance.SpriteBatch.Draw(image, Entity.Transform.Position, SpriteObject.Frames[SpriteObject.CurrentFrame], Color * Transparency, Entity.Transform.Rotation, Origin, Entity.Transform.Scale, Effects, LayerDepth);
             }
             

@@ -101,7 +101,10 @@ namespace Colonia.Engine
                                 Rectangle frame = sprite.Frames[sprite.CurrentFrame];
                                 Vector2 origin = Vector2.Zero;
                                 float rotation = 0.0f;
-                                App.Instance.SpriteBatch.Draw(image, position, frame, tile.Color, rotation, origin, Scale, SpriteEffects.None, z / 1000);
+                                if (tile.Transparency > 1.0f) tile.Transparency = 1.0f;
+                                if (tile.Transparency < 0.0f) tile.Transparency = 0.0f;
+                                Color color = tile.Color * tile.Transparency;
+                                App.Instance.SpriteBatch.Draw(image, position, frame, color, rotation, origin, Scale, SpriteEffects.None, z / 1000);
                             }
                         }
                     }

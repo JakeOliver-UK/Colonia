@@ -15,23 +15,13 @@ namespace Colonia.Scenes
 
             BackgroundColor = Color.Black;
 
-            var tiles = MapGenerator.GenerateRiverMap(DateTime.Now.Ticks.ToString().ToSeed(), 256, 256, 15, 2.5f, 0.002f, 6, 2);
-
             Tilemap = new(1, 8, 8, 256, 256);
             
             for (int x = 0; x < Tilemap.Width; x++)
             {
                 for (int y = 0; y < Tilemap.Height; y++)
                 {
-                    var value = tiles[x, y];
-                    if (value == TileType.Grass)
-                    {
-                        Tilemap[0, x, y].Tile = "Plains_Grass";
-                    }
-                    else
-                    {
-                        Tilemap[0, x, y].Tile = "Plains_Water";
-                    }
+                    Tilemap[0, x, y].Tile = "Plains_Water";
                 }
             }
 
