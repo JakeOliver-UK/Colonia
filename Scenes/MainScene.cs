@@ -1,9 +1,7 @@
 ﻿using Colonia.Engine;
 using Colonia.Engine.Entities;
 using Colonia.Engine.Entities.Components;
-using Colonia.Engine.Utils.Extensions;
 using Microsoft.Xna.Framework;
-using System;
 
 namespace Colonia.Scenes
 {
@@ -27,9 +25,18 @@ namespace Colonia.Scenes
 
             Entity entity = WorldEntityManager.Create("Human");
             entity.Transform.Position = new(100, 100);
-            entity.Transform.Scale = Vector2.One;
             entity.AddComponent<SpriteRenderer>().LayerDepth = 1.0f;
             entity.AddComponent<Creature>();
+
+            Entity panel = OverlayEntityManager.Create("Panel");
+            panel.Transform.Position = new(50, 50);
+            panel.Transform.Scale = new(2.0f, 2.0f);
+            panel.AddComponent<SpriteRenderer>().Sprite = "UI_Panel_1";
+            panel.GetComponent<SpriteRenderer>().Transparency = 0.75f;
+            panel.GetComponent<SpriteRenderer>().LayerDepth = 0.0f;
+            panel.GetComponent<SpriteRenderer>().Width = 400;
+            panel.GetComponent<SpriteRenderer>().Height = 200;
+            panel.GetComponent<SpriteRenderer>().RenderMethod = SpriteRenderMethod.NinePatch;
         }
     }
 }

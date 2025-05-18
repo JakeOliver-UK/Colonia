@@ -1,0 +1,17 @@
+{
+  "Name": "UI_Panel_1",
+  "Images": [
+    "_Classic_UI"
+  ],
+  "Frames": [
+    {
+      "X": 64,
+      "Y": 160,
+      "Width": 48,
+      "Height": 48
+    }
+  ],
+  "Delay": 0.0,
+  "IsLooping": false,
+  "ShouldAutoPlay": false
+}
