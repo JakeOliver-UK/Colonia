@@ -8,6 +8,7 @@ namespace Colonia.Engine.Entities.Components
     {
         public string Sprite { get; set; }
         public Color Color { get; set; } = Color.White;
+        public float Transparency { get; set; } = 1.0f;
         public SpriteEffects Effects { get; set; } = SpriteEffects.None;
         public float LayerDepth { get; set; } = 0.0f;
         public Sprite SpriteObject => App.Instance.AssetManager.Sprites.Get(Sprite);
@@ -36,7 +37,7 @@ namespace Colonia.Engine.Entities.Components
             
             if (App.Instance.SceneManager.Current.Camera.IsVisible(Bounds))
             {
-                App.Instance.SpriteBatch.Draw(image, Entity.Transform.Position, SpriteObject.Frames[SpriteObject.CurrentFrame], Color, Entity.Transform.Rotation, Origin, Entity.Transform.Scale, Effects, LayerDepth);
+                App.Instance.SpriteBatch.Draw(image, Entity.Transform.Position, SpriteObject.Frames[SpriteObject.CurrentFrame], Color * Transparency, Entity.Transform.Rotation, Origin, Entity.Transform.Scale, Effects, LayerDepth);
             }
             
             if (DrawBounds) App.Instance.SpriteBatch.DrawRectangle(Bounds, Color.Lime, 1.0f, 1.0f);

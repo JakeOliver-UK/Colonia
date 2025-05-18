@@ -8,7 +8,7 @@ using System.IO;
 
 namespace Colonia.Engine
 {
-    internal class Tilemap
+    internal class Tilemap : IDisposable
     {
         public TileLayer[] Layers { get; }
         public Vector2 Scale { get; set; } = Vector2.One;
@@ -66,6 +66,7 @@ namespace Colonia.Engine
                     }
                 }
             }
+
             for (int i = 0; i < sprites.Count; i++)
             {
                 Sprite sprite = sprites[i];
@@ -142,9 +143,17 @@ namespace Colonia.Engine
 
         public TileLayer this[int layer] => GetLayer(layer);
         public TileCell this[int layer, int x, int y] => GetLayer(layer)?.GetTile(x, y);
+
+        public void Dispose()
+        {
+            for (int z = 0; z < Layers.Length; z++)
+            {
+                Layers[z].Dispose();
+            }
+        }
     }
 
-    internal class TileLayer
+    internal class TileLayer : IDisposable
     {
         public int Layer { get; }
         public TileCell[,] Tiles { get; }
@@ -179,26 +188,34 @@ namespace Colonia.Engine
 
         public TileCell this[int x, int y] => GetTile(x, y);
 
-        public void SetTile(int x, int y, string sprite, Color color)
+        public void SetTile(int x, int y, string tile) => SetTile(x, y, tile, Color.White, 1.0f);
+        public void SetTile(int x, int y, string tile, Color color) => SetTile(x, y, tile, color, 1.0f);
+
+        public void SetTile(int x, int y, string tile, Color color, float transparency)
         {
             if (x < 0 || x >= Width || y < 0 || y >= Height) return;
-            Tiles[x, y].Tile = sprite;
+            Tiles[x, y].Tile = tile;
             Tiles[x, y].Color = color;
+            Tiles[x, y].Transparency = transparency;
         }
 
-        public void FillTiles(string sprite, Color color)
+        public void FillTiles(string tile, Color color, float transparency)
         {
             for (int x = 0; x < Width; x++)
             {
                 for (int y = 0; y < Height; y++)
                 {
-                    Tiles[x, y].Tile = sprite;
+                    Tiles[x, y].Tile = tile;
                     Tiles[x, y].Color = color;
+                    Tiles[x, y].Transparency = transparency;
                 }
             }
         }
 
-        public void FillTiles(Rectangle area, string sprite, Color color)
+        public void FillTiles(Rectangle area, string tile) => FillTiles(area, tile, Color.White, 1.0f);
+        public void FillTiles(Rectangle area, string tile, Color color) => FillTiles(area, tile, color, 1.0f);
+
+        public void FillTiles(Rectangle area, string tile, Color color, float transparency)
         {
             if (area.X < 0 || area.X + area.Width > Width || area.Y < 0 || area.Y + area.Height > Height) return;
             for (int x = area.X; x < area.X + area.Width; x++)
@@ -206,21 +223,62 @@ namespace Colonia.Engine
                 for (int y = area.Y; y < area.Y + area.Height; y++)
                 {
                     if (x < 0 || x >= Width || y < 0 || y >= Height) continue;
-                    Tiles[x, y].Tile = sprite;
+                    Tiles[x, y].Tile = tile;
                     Tiles[x, y].Color = color;
+                    Tiles[x, y].Transparency = transparency;
+                }
+            }
+        }
+
+        public void ClearTiles()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    Tiles[x, y].Tile = null;
+                    Tiles[x, y].Color = Color.White;
+                    Tiles[x, y].Transparency = 1.0f;
+                }
+            }
+        }
+
+        public void ClearTiles(Rectangle area)
+        {
+            if (area.X < 0 || area.X + area.Width > Width || area.Y < 0 || area.Y + area.Height > Height) return;
+            for (int x = area.X; x < area.X + area.Width; x++)
+            {
+                for (int y = area.Y; y < area.Y + area.Height; y++)
+                {
+                    if (x < 0 || x >= Width || y < 0 || y >= Height) continue;
+                    Tiles[x, y].Tile = null;
+                    Tiles[x, y].Color = Color.White;
+                    Tiles[x, y].Transparency = 1.0f;
+                }
+            }
+        }
+
+        public void Dispose()
+        {
+            for (int x = 0; x < Width; x++)
+            {
+                for (int y = 0; y < Height; y++)
+                {
+                    Tiles[x, y].Dispose();
                 }
             }
         }
     }
 
-    internal class TileCell
+    internal class TileCell : IDisposable
     {
         public int X { get; }
         public int Y { get; }
         public int Width { get; set; }
         public int Height { get; set; }
         public string Tile { get; set; }
-        public Color Color { get; set; } = Color.White;
+        public Color Color { get; set; }
+        public float Transparency { get; set; }
         public Rectangle Bounds => new(X * Width, Y * Height, Width, Height);
 
         public TileCell(int x, int y, int width, int height)
@@ -229,9 +287,22 @@ namespace Colonia.Engine
             Y = y;
             Width = width;
             Height = height;
+            Tile = null;
+            Color = Color.White;
+            Transparency = 1.0f;
         }
 
-        [JsonConstructor]
+        public TileCell(int x, int y, int width, int height, string tile)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Tile = tile;
+            Color = Color.White;
+            Transparency = 1.0f;
+        }
+
         public TileCell(int x, int y, int width, int height, string tile, Color color)
         {
             X = x;
@@ -240,6 +311,26 @@ namespace Colonia.Engine
             Height = height;
             Tile = tile;
             Color = color;
+            Transparency = 1.0f;
+        }
+
+        [JsonConstructor]
+        public TileCell(int x, int y, int width, int height, string tile, Color color, float transparency)
+        {
+            X = x;
+            Y = y;
+            Width = width;
+            Height = height;
+            Tile = tile;
+            Color = color;
+            Transparency = transparency;
+        }
+
+        public void Dispose()
+        {
+            Tile = null;
+            Color = Color.White;
+            Transparency = 1.0f;
         }
     }
 
