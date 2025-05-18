@@ -18,8 +18,8 @@ namespace Colonia.Engine.Entities.Components
 
         public override void Update()
         {
-            if (App.Instance.Input.IsKeyPressed(Keys.Q)) CycleType(1);
-            if (App.Instance.Input.IsKeyPressed(Keys.E)) CycleType(-1);
+            if (App.Instance.Input.IsKeyPressed(Keys.Up)) CycleType(1);
+            if (App.Instance.Input.IsKeyPressed(Keys.Down)) CycleType(-1);
 
             if (App.Instance.Input.IsMouseButtonPressed(MouseButton.Left))
             {

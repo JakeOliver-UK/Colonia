@@ -12,9 +12,12 @@ namespace Colonia.Engine
     {
         public TileLayer[] Layers { get; }
         public Vector2 Scale { get; set; } = Vector2.One;
+        public int Width => Layers[0].Width;
+        public int Height => Layers[0].Height;
 
         public Tilemap(int layerCount, int tileWidth, int tileHeight, int width, int height)
         {
+            if (layerCount <= 0) layerCount = 1;
             Layers = new TileLayer[layerCount];
             for (int i = 0; i < layerCount; i++)
             {

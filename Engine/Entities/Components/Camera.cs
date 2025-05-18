@@ -71,6 +71,10 @@ namespace Colonia.Engine.Entities.Components
             if (App.Instance.Input.IsKeyDown(Keys.A)) movement.X -= 1.0f;
             if (App.Instance.Input.IsKeyDown(Keys.S)) movement.Y += 1.0f;
             if (App.Instance.Input.IsKeyDown(Keys.D)) movement.X += 1.0f;
+            if (App.Instance.Input.IsKeyPressed(Keys.Q)) Zoom++;
+            if (App.Instance.Input.IsKeyPressed(Keys.E)) Zoom--;
+
+            Zoom = Math.Clamp(Zoom, 1, 3);
 
             Entity.Transform.Position += movement * Time.Delta * 250.0f;
         }

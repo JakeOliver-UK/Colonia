@@ -1,7 +1,9 @@
 ﻿using Colonia.Engine;
 using Colonia.Engine.Entities;
 using Colonia.Engine.Entities.Components;
+using Colonia.Engine.Utils.Extensions;
 using Microsoft.Xna.Framework;
+using System;
 
 namespace Colonia.Scenes
 {
@@ -13,8 +15,25 @@ namespace Colonia.Scenes
 
             BackgroundColor = Color.Black;
 
+            var tiles = MapGenerator.GenerateRiverMap(DateTime.Now.Ticks.ToString().ToSeed(), 256, 256, 15, 2.5f, 0.002f, 6, 2);
+
             Tilemap = new(1, 8, 8, 256, 256);
-            Tilemap[0].FillTiles("Plains_Water", Color.White);
+            
+            for (int x = 0; x < Tilemap.Width; x++)
+            {
+                for (int y = 0; y < Tilemap.Height; y++)
+                {
+                    var value = tiles[x, y];
+                    if (value == TileType.Grass)
+                    {
+                        Tilemap[0, x, y].Tile = "Plains_Grass";
+                    }
+                    else
+                    {
+                        Tilemap[0, x, y].Tile = "Plains_Water";
+                    }
+                }
+            }
 
             Entity entity = WorldEntityManager.Create("Human");
             entity.Transform.Position = new(100, 100);
