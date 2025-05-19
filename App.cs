@@ -1,4 +1,5 @@
-﻿using Colonia.Engine.Managers;
+﻿using Colonia.Engine;
+using Colonia.Engine.Managers;
 using Colonia.Engine.Utils;
 using Colonia.Scenes;
 using Microsoft.Xna.Framework;
@@ -15,6 +16,7 @@ namespace Colonia
         public SettingsManager SettingsManager => _settingsManager;
         public AssetManager AssetManager => _assetManager;
         public InputManager Input => _input;
+        public Sprite Cursor { get; set; }
 
         private static App _instance;
         private readonly GraphicsDeviceManager _graphicsDeviceManager;
@@ -28,7 +30,7 @@ namespace Colonia
         {
             _instance = this;
             _graphicsDeviceManager = new(this);
-            IsMouseVisible = true;
+            IsMouseVisible = false;
         }
 
         protected override void Initialize()
@@ -43,6 +45,8 @@ namespace Colonia
             _sceneManager = new();
             _sceneManager.Add("Main", new MainScene());
             _sceneManager.Display("Main");
+
+            Cursor = _assetManager.Sprites["Cursors"];
 
             Log.WriteLine(LogLevel.Info, "Application initialized.");
         }
@@ -68,6 +72,10 @@ namespace Colonia
         protected override void Draw(GameTime gameTime)
         {
             _sceneManager.Current.Draw();
+
+            SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp);
+            SpriteBatch.Draw(_assetManager.Images.Get(Cursor.Images[Cursor.CurrentFrame]), Input.MousePosition, Cursor.Frames[Cursor.CurrentFrame], Color.White, 0f, Vector2.Zero, new Vector2(2.0f, 2.0f), SpriteEffects.None, 1.0f);
+            SpriteBatch.End();
 
             base.Draw(gameTime);
         }

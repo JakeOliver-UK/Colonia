@@ -37,6 +37,8 @@ namespace Colonia.Scenes
             panel.GetComponent<SpriteRenderer>().Width = 400;
             panel.GetComponent<SpriteRenderer>().Height = 200;
             panel.GetComponent<SpriteRenderer>().RenderMethod = SpriteRenderMethod.NinePatch;
+            panel.AddComponent<MouseEvents>().OnMouseEnter += (sender) => panel.GetComponent<SpriteRenderer>().Transparency = 1.0f;
+            panel.GetComponent<MouseEvents>().OnMouseLeave += (sender) => panel.GetComponent<SpriteRenderer>().Transparency = 0.75f;
         }
     }
 }
