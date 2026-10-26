@@ -23,6 +23,7 @@ namespace Colonia.Engine
 
         public virtual void Draw()
         {
+            App.Instance.GraphicsDevice.SetRenderTarget(App.Instance.RenderTarget);
             App.Instance.GraphicsDevice.Clear(BackgroundColor);
 
             App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
@@ -31,6 +32,13 @@ namespace Colonia.Engine
 
             App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
             DrawUI();
+            App.Instance.SpriteBatch.End();
+
+            App.Instance.GraphicsDevice.SetRenderTarget(null);
+            App.Instance.GraphicsDevice.Clear(Color.Black);
+
+            App.Instance.SpriteBatch.Begin(samplerState: SamplerState.PointClamp);
+            App.Instance.SpriteBatch.Draw(App.Instance.RenderTarget, App.Instance.Destination, Color.White);
             App.Instance.SpriteBatch.End();
         }
 

@@ -1,5 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
-using System.Drawing;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Colonia.Engine
 {
@@ -7,7 +7,7 @@ namespace Colonia.Engine
     {
         public Texture2D Texture { get; set; }
         public Rectangle[] Frames { get; set; }
-        public float Delay { get; set; } = 100.0f;
+        public float Delay { get; set; } = 150.0f;
         public Rectangle Current => Frames[_currentFrame];
 
         private int _currentFrame = 0;
