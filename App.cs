@@ -56,7 +56,9 @@ namespace Colonia
 
         protected override void Update(GameTime gameTime)
         {
+            UpdateDestination();
             Time.Update(gameTime);
+            InputManager.Update();
             SceneManager.Current?.Update();
 
             base.Update(gameTime);
@@ -64,7 +66,6 @@ namespace Colonia
 
         protected override void Draw(GameTime gameTime)
         {
-            UpdateDestination();
             SceneManager.Current?.Draw();
 
             base.Draw(gameTime);
@@ -79,23 +80,13 @@ namespace Colonia
         private void UpdateDestination()
         {
             PresentationParameters pp = GraphicsDevice.PresentationParameters;
-            int scale = Math.Max(1, Math.Min(
-                pp.BackBufferWidth / VirtualWidth,
-                pp.BackBufferHeight / VirtualHeight));
-
+            int scale = Math.Max(1, Math.Min(pp.BackBufferWidth / VirtualWidth, pp.BackBufferHeight / VirtualHeight));
             int width = VirtualWidth * scale;
             int height = VirtualHeight * scale;
-
-            _destination = new Rectangle(
-                (pp.BackBufferWidth - width) / 2,
-                (pp.BackBufferHeight - height) / 2,
-                width,
-                height);
+            _destination = new Rectangle((pp.BackBufferWidth - width) / 2, (pp.BackBufferHeight - height) / 2, width, height);
         }
 
-        public Point ScreenToVirtual(Point screen) => new(
-            (screen.X - _destination.X) * VirtualWidth / _destination.Width,
-            (screen.Y - _destination.Y) * VirtualHeight / _destination.Height);
+        public Point ScreenToVirtual(Point screen) => new((screen.X - _destination.X) * VirtualWidth / _destination.Width, (screen.Y - _destination.Y) * VirtualHeight / _destination.Height);
 
         protected override void OnExiting(object sender, ExitingEventArgs args)
         {
