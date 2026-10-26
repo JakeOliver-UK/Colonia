@@ -43,6 +43,7 @@ namespace Colonia
 
         protected override void Update(GameTime gameTime)
         {
+            Time.Update(gameTime);
             SceneManager.Current?.Update();
 
             base.Update(gameTime);
