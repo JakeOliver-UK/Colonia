@@ -8,14 +8,27 @@ namespace Colonia.Scenes
 {
     internal class MainScene : Scene
     {
+        private Tilemap _tilemap;
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            BackgroundColor = Color.Black;
+
+            _tilemap = new Tilemap(256, 256, 8, 8, 1);
+            _tilemap.Set(0, 0, 0, _tilemap.Width, _tilemap.Height, "grass");
+        }
+
         public override void LoadContent()
         {
             base.LoadContent();
 
             Textures.Add("human_idle", ContentManager.Load<Texture2D>("human_idle"));
-            
-            Sprite sprite = new(
-                "human_idle", 
+            Textures.Add("plains_tileset", ContentManager.Load<Texture2D>("plains_tileset"));
+
+            Sprite humanSprite = new(
+                "human_idle",
                 [
                     new(12, 12, 8, 8),
                     new(44, 12, 8, 8),
@@ -35,8 +48,16 @@ namespace Colonia.Scenes
                     new(492, 12, 8, 8)
                 ],
                 150.0f);
-            
-            Sprites.Add("human_idle", sprite);
+
+            Sprite grassSprite = new(
+                "plains_tileset",
+                [
+                    new(294, 85, 8, 8)
+                ],
+                150.0f);
+
+            Sprites.Add("human_idle", humanSprite);
+            Sprites.Add("grass", grassSprite);
         }
 
         public override void Update()
@@ -45,17 +66,18 @@ namespace Colonia.Scenes
 
             Sprites["human_idle"].Update();
 
-            if (InputManager.IsKeyDown(Keys.W)) Camera.Position += new Vector2(0, -1) * 100.0f * Time.Delta;
-            if (InputManager.IsKeyDown(Keys.S)) Camera.Position += new Vector2(0, 1) * 100.0f * Time.Delta;
-            if (InputManager.IsKeyDown(Keys.A)) Camera.Position += new Vector2(-1, 0) * 100.0f * Time.Delta;
-            if (InputManager.IsKeyDown(Keys.D)) Camera.Position += new Vector2(1, 0) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.W)) Camera.Position += new Vector2(0.0f, -1.0f) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.S)) Camera.Position += new Vector2(0.0f, 1.0f) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.A)) Camera.Position += new Vector2(-1.0f, 0.0f) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.D)) Camera.Position += new Vector2(1.0f, 0.0f) * 100.0f * Time.Delta;
         }
 
         public override void DrawWorld()
         {
             base.DrawWorld();
 
-            App.Instance.SpriteBatch.Draw(Textures[Sprites["human_idle"].Texture], Vector2.Zero, Sprites["human_idle"].Current, Color.White);
+            _tilemap.Draw();
+            App.Instance.SpriteBatch.Draw(Textures[Sprites["human_idle"].Texture], new Vector2(80.0f, 40.0f), Sprites["human_idle"].Current, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 1.0f);
         }
     }
 }
