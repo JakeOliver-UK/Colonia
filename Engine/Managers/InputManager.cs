@@ -53,6 +53,8 @@ namespace Colonia.Engine.Managers
 
         public static bool IsMouseScrollingUp => _currentMouseState.ScrollWheelValue > _previousMouseState.ScrollWheelValue;
         public static bool IsMouseScrollingDown => _currentMouseState.ScrollWheelValue < _previousMouseState.ScrollWheelValue;
+        public static bool IsMouseScrollingLeft => _currentMouseState.HorizontalScrollWheelValue < _previousMouseState.HorizontalScrollWheelValue;
+        public static bool IsMouseScrollingRight => _currentMouseState.HorizontalScrollWheelValue > _previousMouseState.HorizontalScrollWheelValue;
     }
 
     public enum MouseButton

@@ -14,6 +14,7 @@ namespace Colonia
         public SpriteBatch SpriteBatch => _spriteBatch;
         public RenderTarget2D RenderTarget => _renderTarget;
         public Rectangle Destination => _destination;
+        
         public const int VirtualWidth = 640;
         public const int VirtualHeight = 360;
 
@@ -35,8 +36,8 @@ namespace Colonia
         {
             Log.WriteLine(LogLevel.Info, $"Initializing application...");
 
-            _graphicsDeviceManager.PreferredBackBufferWidth = 1920;
-            _graphicsDeviceManager.PreferredBackBufferHeight = 1080;
+            _graphicsDeviceManager.PreferredBackBufferWidth = 2560;
+            _graphicsDeviceManager.PreferredBackBufferHeight = 1440;
             _graphicsDeviceManager.IsFullScreen = true;
             _graphicsDeviceManager.ApplyChanges();
 

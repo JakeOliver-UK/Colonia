@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 
 namespace Colonia.Engine
 {
@@ -9,12 +10,24 @@ namespace Colonia.Engine
     {
         public Color BackgroundColor { get; set; } = Color.CornflowerBlue;
         public ContentManager ContentManager => _contentManager;
+        public Dictionary<string, Texture2D> Textures => _textures;
+        public Dictionary<string, Sprite> Sprites => _sprites;
+        public Camera Camera => _camera;
 
         private ContentManager _contentManager;
+        private Dictionary<string, Texture2D> _textures;
+        private Dictionary<string, Sprite> _sprites;
+        private Camera _camera;
 
         public virtual void Initialize()
         {
             _contentManager = new ContentManager(App.Instance.Services, "Content");
+            _textures = [];
+            _camera = new Camera
+            {
+                ViewSize = new Point(App.Instance.RenderTarget.Width, App.Instance.RenderTarget.Height)
+            };
+            _sprites = [];
             LoadContent();
         }
 
@@ -26,7 +39,7 @@ namespace Colonia.Engine
             App.Instance.GraphicsDevice.SetRenderTarget(App.Instance.RenderTarget);
             App.Instance.GraphicsDevice.Clear(BackgroundColor);
 
-            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, null);
+            App.Instance.SpriteBatch.Begin(SpriteSortMode.FrontToBack, BlendState.AlphaBlend, SamplerState.PointClamp, null, null, null, _camera.GetViewMatrix());
             DrawWorld();
             App.Instance.SpriteBatch.End();
 

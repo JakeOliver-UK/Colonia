@@ -1,48 +1,61 @@
 ﻿using Colonia.Engine;
+using Colonia.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 
 namespace Colonia.Scenes
 {
     internal class MainScene : Scene
     {
-        private Texture2D _texture;
-        private Sprite _sprite;
-
         public override void LoadContent()
         {
             base.LoadContent();
 
-            _texture = ContentManager.Load<Texture2D>("human_idle");
-            _sprite = new Sprite(_texture, 16);
-            _sprite.Frames[0] = new Rectangle(12, 12, 8, 8);
-            _sprite.Frames[1] = new Rectangle(44, 12, 8, 8);
-            _sprite.Frames[2] = new Rectangle(76, 12, 8, 8);
-            _sprite.Frames[3] = new Rectangle(108, 12, 8, 8);
-            _sprite.Frames[4] = new Rectangle(140, 12, 8, 8);
-            _sprite.Frames[5] = new Rectangle(172, 12, 8, 8);
-            _sprite.Frames[6] = new Rectangle(204, 12, 8, 8);
-            _sprite.Frames[7] = new Rectangle(236, 12, 8, 8);
-            _sprite.Frames[8] = new Rectangle(268, 12, 8, 8);
-            _sprite.Frames[9] = new Rectangle(300, 12, 8, 8);
-            _sprite.Frames[10] = new Rectangle(332, 12, 8, 8);
-            _sprite.Frames[11] = new Rectangle(364, 12, 8, 8);
-            _sprite.Frames[12] = new Rectangle(396, 12, 8, 8);
-            _sprite.Frames[13] = new Rectangle(428, 12, 8, 8);
-            _sprite.Frames[14] = new Rectangle(460, 12, 8, 8);
-            _sprite.Frames[15] = new Rectangle(492, 12, 8, 8);
+            Textures.Add("human_idle", ContentManager.Load<Texture2D>("human_idle"));
+            
+            Sprite sprite = new(
+                "human_idle", 
+                [
+                    new(12, 12, 8, 8),
+                    new(44, 12, 8, 8),
+                    new(76, 12, 8, 8),
+                    new(108, 12, 8, 8),
+                    new(140, 12, 8, 8),
+                    new(172, 12, 8, 8),
+                    new(204, 12, 8, 8),
+                    new(236, 12, 8, 8),
+                    new(268, 12, 8, 8),
+                    new(300, 12, 8, 8),
+                    new(332, 12, 8, 8),
+                    new(364, 12, 8, 8),
+                    new(396, 12, 8, 8),
+                    new(428, 12, 8, 8),
+                    new(460, 12, 8, 8),
+                    new(492, 12, 8, 8)
+                ],
+                150.0f);
+            
+            Sprites.Add("human_idle", sprite);
         }
 
         public override void Update()
         {
             base.Update();
-            _sprite.Update();
+
+            Sprites["human_idle"].Update();
+
+            if (InputManager.IsKeyDown(Keys.W)) Camera.Position += new Vector2(0, -1) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.S)) Camera.Position += new Vector2(0, 1) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.A)) Camera.Position += new Vector2(-1, 0) * 100.0f * Time.Delta;
+            if (InputManager.IsKeyDown(Keys.D)) Camera.Position += new Vector2(1, 0) * 100.0f * Time.Delta;
         }
 
         public override void DrawWorld()
         {
             base.DrawWorld();
-            App.Instance.SpriteBatch.Draw(_sprite.Texture, new Vector2(100, 100), _sprite.Current, Color.White);
+
+            App.Instance.SpriteBatch.Draw(Textures[Sprites["human_idle"].Texture], Vector2.Zero, Sprites["human_idle"].Current, Color.White);
         }
     }
 }
