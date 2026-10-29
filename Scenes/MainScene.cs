@@ -16,8 +16,8 @@ namespace Colonia.Scenes
 
             BackgroundColor = Color.Black;
 
-            _tilemap = new Tilemap(256, 256, 8, 8, 1);
-            _tilemap.Set(0, 0, 0, _tilemap.Width, _tilemap.Height, "grass");
+            _tilemap = new Tilemap(256, 256, 8, 8, 2);
+            _tilemap.Set(0, 0, 0, _tilemap.Width, _tilemap.Height, "water");
         }
 
         public override void LoadContent()
@@ -56,8 +56,17 @@ namespace Colonia.Scenes
                 ],
                 150.0f);
 
+            Sprite waterSprite = new(
+                "plains_tileset",
+                [
+                    new(208, 8, 8, 8),
+                    new(240, 8, 8, 8)
+                ],
+                600.0f);
+
             Sprites.Add("human_idle", humanSprite);
             Sprites.Add("grass", grassSprite);
+            Sprites.Add("water", waterSprite);
         }
 
         public override void Update()
@@ -65,6 +74,8 @@ namespace Colonia.Scenes
             base.Update();
 
             Sprites["human_idle"].Update();
+            Sprites["grass"].Update();
+            Sprites["water"].Update();
 
             if (InputManager.IsKeyDown(Keys.W)) Camera.Position += new Vector2(0.0f, -1.0f) * 100.0f * Time.Delta;
             if (InputManager.IsKeyDown(Keys.S)) Camera.Position += new Vector2(0.0f, 1.0f) * 100.0f * Time.Delta;
