@@ -3,12 +3,15 @@ using Colonia.Engine.Managers;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 
 namespace Colonia.Scenes
 {
     internal class MainScene : Scene
     {
         private Tilemap _tilemap;
+        private Vector2 _position = new(80.0f, 40.0f);
+        private Vector2 _target = new(80.0f, 40.0f);
 
         public override void Initialize()
         {
@@ -81,6 +84,22 @@ namespace Colonia.Scenes
             if (InputManager.IsKeyDown(Keys.S)) Camera.Position += new Vector2(0.0f, 1.0f) * 100.0f * Time.Delta;
             if (InputManager.IsKeyDown(Keys.A)) Camera.Position += new Vector2(-1.0f, 0.0f) * 100.0f * Time.Delta;
             if (InputManager.IsKeyDown(Keys.D)) Camera.Position += new Vector2(1.0f, 0.0f) * 100.0f * Time.Delta;
+
+            if (InputManager.IsMouseButtonDown(MouseButton.Left))
+            {
+                _target = Camera.ScreenToWorld(InputManager.MousePosition);
+            }
+            
+            Vector2 toTarget = _target - _position;
+            float distance = toTarget.Length();
+            float speed = 100.0f;
+            if (distance > 1.0f)
+            {
+                Vector2 direction = toTarget / distance;
+                float step = speed * Time.Delta;
+
+                _position += direction * MathF.Min(step, distance);
+            }
         }
 
         public override void DrawWorld()
@@ -88,7 +107,7 @@ namespace Colonia.Scenes
             base.DrawWorld();
 
             _tilemap.Draw();
-            App.Instance.SpriteBatch.Draw(Textures[Sprites["human_idle"].Texture], new Vector2(80.0f, 40.0f), Sprites["human_idle"].Current, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 1.0f);
+            App.Instance.SpriteBatch.Draw(Textures[Sprites["human_idle"].Texture], _position, Sprites["human_idle"].Current, Color.White, 0.0f, Vector2.Zero, Vector2.One, SpriteEffects.None, 1.0f);
         }
     }
 }
